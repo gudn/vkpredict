@@ -18,10 +18,10 @@ func buildScorer(q string) match.Scorer {
 	}
 }
 
-func (m *Matcher) Match(q string, k uint) ([]*topk.Entry, error) {
+func (m *Matcher) Match(q string, k uint) (topk.List, error) {
 	return match.TopIter(m, k, buildScorer(q))
 }
 
-func (m *Matcher) MatchFrom(q string, k uint, ids []store.ID) ([]*topk.Entry, error) {
+func (m *Matcher) MatchFrom(q string, k uint, ids []store.ID) (topk.List, error) {
 	return match.TopIterFrom(m, k, buildScorer(q), ids)
 }

@@ -18,6 +18,8 @@ type TopK struct {
 	K    uint
 }
 
+type List []*Entry
+
 // O(logK)
 func (t *TopK) siftup(i int) {
 	for i > 0 {
@@ -65,7 +67,7 @@ func (t *TopK) Add(entry *Entry) bool {
 }
 
 // Return sorted TopK with O(K + KlogK)
-func (t *TopK) Extract() []*Entry {
+func (t *TopK) Extract() List {
 	t.RLock()
 	c := make([]*Entry, len(t.heap))
 	copy(c, t.heap)
