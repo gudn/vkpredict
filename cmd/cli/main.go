@@ -6,11 +6,24 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/gudn/vkpredict"
+	"github.com/gudn/vkpredict/pkg/match"
 	"github.com/gudn/vkpredict/pkg/match/pfunc"
 	"github.com/gudn/vkpredict/pkg/store/memory"
 )
+
+var matcher = &match.Preprocessed{
+	Preprocessor: strings.ToLower,
+	Matcher: &pfunc.Matcher{
+		IterAnyStore: memory.New(),
+	},
+}
+var predictor = vkpredict.Predictor{
+	Store: memory.New(),
+	Matcher: matcher,
+}
 
 func loadEntries(fname string) ([]string, error) {
 	f, err := os.Open(fname)
@@ -32,11 +45,6 @@ func main() {
 	entries, err := loadEntries(*entriesFile)
 	if err != nil {
 		log.Fatalln(err)
-	}
-	s := memory.New()
-	predictor := vkpredict.Predictor{
-		Store:   s,
-		Matcher: &pfunc.Matcher{IterAnyStore: s},
 	}
 	err = predictor.Add(entries)
 	if err != nil {
