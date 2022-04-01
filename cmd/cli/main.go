@@ -9,17 +9,15 @@ import (
 	"strings"
 
 	"github.com/gudn/vkpredict"
-	"github.com/gudn/vkpredict/pkg/match"
 	"github.com/gudn/vkpredict/pkg/match/pfunc"
+	"github.com/gudn/vkpredict/pkg/match/preprocessed"
 	"github.com/gudn/vkpredict/pkg/store/memory"
 )
 
-var matcher = &match.Preprocessed{
-	Preprocessor: strings.ToLower,
-	Matcher: &pfunc.Matcher{
-		IterAnyStore: memory.New(),
-	},
-}
+var matcher = preprocessed.New(
+	strings.ToLower,
+	pfunc.New(memory.New()),
+)
 var predictor = vkpredict.Predictor{
 	Store: memory.New(),
 	Matcher: matcher,

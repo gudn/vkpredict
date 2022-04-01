@@ -1,27 +1,21 @@
 package pfunc
 
 import (
-	"github.com/gudn/vkpredict/pkg/match"
+	"github.com/gudn/vkpredict/pkg/match/builder"
 	"github.com/gudn/vkpredict/pkg/pfunc"
 	"github.com/gudn/vkpredict/pkg/store"
-	"github.com/gudn/vkpredict/pkg/topk"
 )
 
-type Matcher struct {
-	store.IterAnyStore
-}
-
-func buildScorer(q string) match.Scorer {
+func BuildScorer(q string) builder.Scorer {
 	q += string([]byte{0})
-	return func(entry string) float64 {
-		return float64(pfunc.MaxPfunc(q + entry))
+	return func(value string) float64 {
+		return float64(pfunc.MaxPfunc(q + value))
 	}
 }
 
-func (m *Matcher) Match(q string, k uint) (topk.List, error) {
-	return match.TopIter(m, k, buildScorer(q))
-}
-
-func (m *Matcher) MatchFrom(q string, k uint, list topk.List) (topk.List, error) {
-	return match.TopIterFrom(m, k, buildScorer(q), list)
+func New(s store.IterAnyStore) *builder.BuilderMatcher {
+	return &builder.BuilderMatcher{
+		Builder: BuildScorer,
+		IterAnyStore: s,
+	}
 }
