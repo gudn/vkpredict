@@ -11,7 +11,7 @@ import (
 
 func makeEntry(score float64) *Entry {
 	return &Entry{
-		Id: store.ID(strconv.Itoa(int(math.Round(score)))),
+		Id:    store.ID(strconv.Itoa(int(math.Round(score)))),
 		Score: score,
 	}
 }
@@ -58,7 +58,7 @@ func BenchmarkTopK5(b *testing.B) {
 
 func BenchmarkTopK5Parrallel(b *testing.B) {
 	topk := &TopK{K: 5}
-	b.RunParallel(func (pb *testing.PB) {
+	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
 			score := rand.Float64()
 			topk.Add(makeEntry(score))

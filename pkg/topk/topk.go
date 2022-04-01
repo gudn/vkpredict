@@ -8,14 +8,14 @@ import (
 )
 
 type Entry struct {
-	Id store.ID
+	Id    store.ID
 	Score float64
 }
 
 type TopK struct {
 	sync.RWMutex
 	heap []*Entry
-	K uint
+	K    uint
 }
 
 // O(logK)
@@ -34,8 +34,8 @@ func (t *TopK) siftup(i int) {
 func (t *TopK) siftdown(i int) {
 	n := len(t.heap)
 	for {
-		lc := 2 * i + 1
-		rc := 2 * i + 2
+		lc := 2*i + 1
+		rc := 2*i + 2
 		if rc < n && t.heap[lc].Score > t.heap[rc].Score {
 			lc, rc = rc, lc
 		}

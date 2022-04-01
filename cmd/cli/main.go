@@ -8,6 +8,8 @@ import (
 	"os"
 
 	"github.com/gudn/vkpredict"
+	"github.com/gudn/vkpredict/pkg/match/pfunc"
+	"github.com/gudn/vkpredict/pkg/store"
 )
 
 func loadEntries(fname string) ([]string, error) {
@@ -31,7 +33,11 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	predictor := vkpredict.Predictor{}
+	s := store.NewMemory()
+	predictor := vkpredict.Predictor{
+		Store:   s,
+		Matcher: &pfunc.Matcher{IterableFromStore: s},
+	}
 	err = predictor.Add(entries)
 	if err != nil {
 		log.Fatalln(err)
