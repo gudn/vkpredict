@@ -8,7 +8,7 @@ import (
 )
 
 type Matcher struct {
-	store.IterableFromStore
+	store.IterAnyStore
 }
 
 func buildScorer(q string) match.Scorer {

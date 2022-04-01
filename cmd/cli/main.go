@@ -36,7 +36,7 @@ func main() {
 	s := memory.New()
 	predictor := vkpredict.Predictor{
 		Store:   s,
-		Matcher: &pfunc.Matcher{IterableFromStore: s},
+		Matcher: &pfunc.Matcher{IterAnyStore: s},
 	}
 	err = predictor.Add(entries)
 	if err != nil {

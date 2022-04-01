@@ -7,7 +7,7 @@ import (
 
 type Scorer func(entry string) float64
 
-func TopIter(s store.IterableStore, k uint, f Scorer) ([]*topk.Entry, error) {
+func TopIter(s store.IterAllStore, k uint, f Scorer) ([]*topk.Entry, error) {
 	top := &topk.TopK{K: k}
 	err := s.Iter(func(id store.ID, value string) {
 		score := f(value)
@@ -19,7 +19,7 @@ func TopIter(s store.IterableStore, k uint, f Scorer) ([]*topk.Entry, error) {
 	return top.Extract(), err
 }
 
-func TopIterFrom(s store.IterableFromStore, k uint, f Scorer, ids []store.ID) ([]*topk.Entry, error) {
+func TopIterFrom(s store.IterFromStore, k uint, f Scorer, ids []store.ID) ([]*topk.Entry, error) {
 	top := &topk.TopK{K: k}
 	err := s.IterFrom(ids, func(id store.ID, value string) {
 		score := f(value)

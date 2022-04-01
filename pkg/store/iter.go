@@ -2,23 +2,26 @@ package store
 
 type IterCb func(id ID, value string)
 
-type IterableStore interface {
+type IterAllStore interface {
 	Store
 
 	Iter(IterCb) error
 }
 
-type IterableFromStore interface {
-	IterableStore
-
+type IterFromStore interface {
 	IterFrom([]ID, IterCb) error
 }
 
-type IterableFromWrapper struct {
-	IterableStore
+type IterAnyStore interface {
+	IterAllStore
+	IterFromStore
 }
 
-func (i *IterableFromWrapper) IterFrom(
+type IterFromWrapper struct {
+	IterAllStore
+}
+
+func (i *IterFromWrapper) IterFrom(
 	ids []ID,
 	cb IterCb,
 ) error {
