@@ -11,11 +11,17 @@ import (
 	"github.com/gudn/vkpredict"
 	"github.com/gudn/vkpredict/pkg/match/pfunc"
 	"github.com/gudn/vkpredict/pkg/match/preprocessed"
+	"github.com/gudn/vkpredict/pkg/preprocessing/norm"
+	"github.com/gudn/vkpredict/pkg/preprocessing/sequence"
 	"github.com/gudn/vkpredict/pkg/store/memory"
 )
 
-var matcher = preprocessed.New(
+var prep = sequence.New(
+	norm.Norm,
 	strings.ToLower,
+)
+var matcher = preprocessed.New(
+	prep,
 	pfunc.New(memory.New()),
 )
 var predictor = vkpredict.Predictor{
