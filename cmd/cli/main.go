@@ -32,7 +32,7 @@ func main() {
 		log.Fatalln(err)
 	}
 	predictor := vkpredict.Predictor{}
-	err = predictor.AddEntries(entries)
+	err = predictor.Add(entries)
 	if err != nil {
 		log.Fatalln(err)
 	}

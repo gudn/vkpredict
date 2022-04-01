@@ -1,22 +1,38 @@
 package vkpredict
 
-import "github.com/gudn/vkpredict/pkg/pfunc"
+import (
+	"github.com/gudn/vkpredict/pkg/pfunc"
+	"github.com/gudn/vkpredict/pkg/store"
+	"github.com/gudn/vkpredict/pkg/topk"
+)
+
+type Entry struct {
+	Value string
+	Score float64
+}
 
 type Predictor struct {
 	entries []string
 }
 
-func (p *Predictor) Predict(query string, limit int) (EntryList, error) {
+func (p *Predictor) Predict(query string, k int) ([]Entry, error) {
 	query += string([]byte{0})
-	list := make([]Entry, 0, len(p.entries))
+	top := &topk.TopK{K: uint(k)}
 	for _, entry := range p.entries {
 		score := pfunc.MaxPfunc(query + entry)
-		list = append(list, Entry{entry, score})
+		top.Add(&topk.Entry{
+			Id: store.ID(entry),
+			Score: float64(score),
+		})
 	}
-	return EntryList(list).Top(limit), nil
+	result := make([]Entry, 0, k)
+	for _, v := range top.Extract() {
+		result = append(result, Entry{string(v.Id), v.Score})
+	}
+	return result, nil
 }
 
-func (p *Predictor) AddEntries(entries []string) error {
+func (p *Predictor) Add(entries []string) error {
 	p.entries = append(p.entries, entries...)
 	return nil
 }
