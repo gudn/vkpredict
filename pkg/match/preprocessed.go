@@ -23,7 +23,7 @@ func (p *Preprocessed) Match(q string, k uint) (topk.List, error) {
 	return p.Matcher.Match(q, k)
 }
 
-func (p *Preprocessed) MatchFrom(q string, k uint, ids []store.ID) (topk.List, error) {
+func (p *Preprocessed) MatchFrom(q string, k uint, list topk.List) (topk.List, error) {
 	q = p.Preprocessor(q)
-	return p.Matcher.MatchFrom(q, k, ids)
+	return p.Matcher.MatchFrom(q, k, list)
 }

@@ -9,5 +9,5 @@ type Matcher interface {
 	store.AddRemover
 
 	Match(q string, k uint) (topk.List, error)
-	MatchFrom(q string, k uint, ids []store.ID) (topk.List, error)
+	MatchFrom(q string, k uint, list topk.List) (topk.List, error)
 }

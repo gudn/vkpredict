@@ -18,8 +18,6 @@ type TopK struct {
 	K    uint
 }
 
-type List []*Entry
-
 // O(logK)
 func (t *TopK) siftup(i int) {
 	for i > 0 {

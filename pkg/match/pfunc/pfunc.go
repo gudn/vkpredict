@@ -22,6 +22,6 @@ func (m *Matcher) Match(q string, k uint) (topk.List, error) {
 	return match.TopIter(m, k, buildScorer(q))
 }
 
-func (m *Matcher) MatchFrom(q string, k uint, ids []store.ID) (topk.List, error) {
-	return match.TopIterFrom(m, k, buildScorer(q), ids)
+func (m *Matcher) MatchFrom(q string, k uint, list topk.List) (topk.List, error) {
+	return match.TopIterFrom(m, k, buildScorer(q), list)
 }

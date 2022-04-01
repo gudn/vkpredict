@@ -19,9 +19,9 @@ func TopIter(s store.IterAllStore, k uint, f Scorer) (topk.List, error) {
 	return top.Extract(), err
 }
 
-func TopIterFrom(s store.IterFromStore, k uint, f Scorer, ids []store.ID) (topk.List, error) {
+func TopIterFrom(s store.IterFromStore, k uint, f Scorer, list topk.List) (topk.List, error) {
 	top := &topk.TopK{K: k}
-	err := s.IterFrom(ids, func(id store.ID, value string) {
+	err := s.IterFrom(list.AsIds(), func(id store.ID, value string) {
 		score := f(value)
 		top.Add(&topk.Entry{
 			Id:    id,
