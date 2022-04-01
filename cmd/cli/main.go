@@ -9,7 +9,7 @@ import (
 
 	"github.com/gudn/vkpredict"
 	"github.com/gudn/vkpredict/pkg/match/pfunc"
-	"github.com/gudn/vkpredict/pkg/store"
+	"github.com/gudn/vkpredict/pkg/store/memory"
 )
 
 func loadEntries(fname string) ([]string, error) {
@@ -33,7 +33,7 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	s := store.NewMemory()
+	s := memory.New()
 	predictor := vkpredict.Predictor{
 		Store:   s,
 		Matcher: &pfunc.Matcher{IterableFromStore: s},
