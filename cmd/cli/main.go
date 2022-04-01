@@ -24,7 +24,7 @@ func loadEntries(fname string) ([]string, error) {
 }
 
 func main() {
-	limit := flag.Int("limit", 5, "limit of results")
+	limit := flag.Uint("limit", 5, "limit of results")
 	entriesFile := flag.String("entries", "", "path to newline-separated entries")
 	flag.Parse()
 	entries, err := loadEntries(*entriesFile)

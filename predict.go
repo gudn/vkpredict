@@ -15,9 +15,9 @@ type Predictor struct {
 	entries []string
 }
 
-func (p *Predictor) Predict(query string, k int) ([]Entry, error) {
+func (p *Predictor) Predict(query string, k uint) ([]Entry, error) {
 	query += string([]byte{0})
-	top := &topk.TopK{K: uint(k)}
+	top := &topk.TopK{K: k}
 	for _, entry := range p.entries {
 		score := pfunc.MaxPfunc(query + entry)
 		top.Add(&topk.Entry{
