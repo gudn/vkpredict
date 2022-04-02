@@ -13,6 +13,7 @@ import (
 	"github.com/gudn/vkpredict/pkg/match/prev"
 	"github.com/gudn/vkpredict/pkg/preprocessing/norm"
 	"github.com/gudn/vkpredict/pkg/preprocessing/sequence"
+	"github.com/gudn/vkpredict/pkg/preprocessing/stopwords"
 	"github.com/gudn/vkpredict/pkg/revidx/revstore"
 	"github.com/gudn/vkpredict/pkg/store/memory"
 )
@@ -20,6 +21,7 @@ import (
 var prep = sequence.New(
 	norm.Norm,
 	strings.ToLower,
+	stopwords.Stopwords,
 )
 var matcher = preprocessed.New(
 	prep,
