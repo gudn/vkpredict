@@ -3,6 +3,7 @@ package revstore
 import (
 	"sort"
 	"strings"
+	"sync"
 
 	"github.com/gudn/vkpredict/pkg/iters"
 	"github.com/gudn/vkpredict/pkg/store"
@@ -10,6 +11,7 @@ import (
 
 type RevStore struct {
 	store.Store
+	mux sync.Mutex
 }
 
 func loadStrings(encoded string) []string {
@@ -44,6 +46,8 @@ func dumpStrings(values []string) string {
 }
 
 func (r *RevStore) Add(id store.ID, keys []string) error {
+	r.mux.Lock()
+	defer r.mux.Unlock()
 	ks := store.StringsToIds(keys)
 	data, err := r.Get(ks)
 	if err != nil {
