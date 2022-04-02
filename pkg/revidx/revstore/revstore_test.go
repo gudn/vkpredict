@@ -9,7 +9,7 @@ import (
 
 func TestRevStore(t *testing.T) {
 	s := memory.New()
-	rs := &RevStore{s}
+	rs := &RevStore{Store: s}
 	rs.Add("1", []string{"a", "b", "e"})
 	rs.Add("2", []string{"a", "b", "c", "d", "e"})
 	rs.Add("3", []string{"c", "d"})
