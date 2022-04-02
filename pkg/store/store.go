@@ -10,12 +10,11 @@ type ID string
 
 var None ID
 
-type AddRemover interface {
+type Adder interface {
 	Add(iids []ID, items []string) ([]ID, error)
-	Remove(ids []ID) error
 }
 
 type Store interface {
-	AddRemover
+	Adder
 	Get(ids []ID) (map[ID]string, error)
 }

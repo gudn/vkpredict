@@ -32,18 +32,6 @@ func (m *MemoryStore) Add(iids []store.ID, items []string) (ids []store.ID, err 
 	return
 }
 
-func (m *MemoryStore) Remove(ids []store.ID) (err error) {
-	if m == nil {
-		return store.ErrStoreIsNil
-	}
-	m.Lock()
-	defer m.Unlock()
-	for _, v := range ids {
-		delete(m.data, v)
-	}
-	return
-}
-
 func (m *MemoryStore) Get(ids []store.ID) (items map[store.ID]string, err error) {
 	if m == nil {
 		err = store.ErrStoreIsNil

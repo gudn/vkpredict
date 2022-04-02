@@ -6,7 +6,7 @@ import (
 )
 
 type Matcher interface {
-	store.AddRemover
+	store.Adder
 
 	Match(q string, k uint) (topk.List, error)
 	MatchFrom(q string, k uint, list topk.List) (topk.List, error)
