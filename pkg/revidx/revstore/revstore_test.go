@@ -8,7 +8,7 @@ import (
 )
 
 func TestRevStore(t *testing.T) {
-	s:= memory.New()
+	s := memory.New()
 	rs := &RevStore{s}
 	rs.Add("1", []string{"a", "b", "e"})
 	rs.Add("2", []string{"a", "b", "c", "d", "e"})
@@ -20,7 +20,7 @@ func TestRevStore(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	expect := func (eid string, ecnt int) {
+	expect := func(eid string, ecnt int) {
 		id, cnt := iters.Next()
 		if id != store.ID(eid) {
 			t.Errorf("mismatched id: %q != %q", id, eid)

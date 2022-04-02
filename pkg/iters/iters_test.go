@@ -24,7 +24,7 @@ func TestIters(t *testing.T) {
 		NewIterSlice(makeSlice("2", "3", "5", "6")),
 		NewIterSlice(makeSlice("1", "2", "4", "6")),
 	)
-	expect := func (eid string, ecnt int) {
+	expect := func(eid string, ecnt int) {
 		id, cnt := iters.Next()
 		if id != store.ID(eid) {
 			t.Errorf("mismatched id: %q != %q", id, eid)

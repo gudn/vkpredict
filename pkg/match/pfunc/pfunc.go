@@ -15,7 +15,7 @@ func BuildScorer(q string) builder.Scorer {
 
 func New(s store.IterAnyStore) *builder.BuilderMatcher {
 	return &builder.BuilderMatcher{
-		Builder: BuildScorer,
+		Builder:      BuildScorer,
 		IterAnyStore: s,
 	}
 }

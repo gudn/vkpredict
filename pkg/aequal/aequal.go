@@ -68,5 +68,5 @@ func EditDistance(a, b string) uint {
 
 func IsAEqual(a, b string) bool {
 	d := EditDistance(a, b)
-	return 4 * d < uint(len(a))
+	return 4*d < uint(len(a))
 }

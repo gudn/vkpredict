@@ -63,7 +63,7 @@ func (p *PRevMatcher) Match(q string, k uint) (topk.List, error) {
 			break
 		}
 		top.Add(&topk.Entry{
-			Id: id,
+			Id:    id,
 			Score: float64(cnt),
 		})
 	}

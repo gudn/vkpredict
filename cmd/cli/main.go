@@ -31,7 +31,7 @@ var matcher = preprocessed.New(
 	},
 )
 var predictor = vkpredict.Predictor{
-	Store: memory.New(),
+	Store:   memory.New(),
 	Matcher: matcher,
 }
 
