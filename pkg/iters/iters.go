@@ -1,6 +1,7 @@
 package iters
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/gudn/vkpredict/pkg/store"
@@ -48,7 +49,7 @@ func (it *Iters) Next() (id store.ID, cnt int) {
 
 func New(iters ...Iterable) *Iters {
 	it := &Iters{heap: iters}
-	for i := len(it.heap) / 2; i >= 0; i-- {
+	for i := len(it.heap) - 1; i >= 0; i-- {
 		it.siftup(i)
 	}
 	return it
