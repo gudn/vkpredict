@@ -12,7 +12,7 @@ var stopWords map[string]struct{}
 
 func init() {
 	words := strings.Fields(contents)
-	stopWords = make(map[string]struct{})
+	stopWords = make(map[string]struct{}, len(words))
 	for _, w := range words {
 		stopWords[w] = struct{}{}
 	}
