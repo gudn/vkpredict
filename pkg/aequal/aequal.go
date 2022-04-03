@@ -52,11 +52,13 @@ func EditDistance(value Interface) int {
 		prev1 = curr
 	}
 	tailingInserts := 0
-	for j := 1; j <= m; j++ {
-		if prev1[j] == prev1[j-1]+InsertCost {
-			tailingInserts++
-		} else {
-			tailingInserts = 0
+	if n >= 3 {
+		for j := 1; j <= m; j++ {
+			if prev1[j] == prev1[j-1]+InsertCost {
+				tailingInserts++
+			} else {
+				tailingInserts = 0
+			}
 		}
 	}
 	return prev1[m] - tailingInserts
