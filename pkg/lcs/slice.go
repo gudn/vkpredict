@@ -12,8 +12,8 @@ func (e *EqualSlice) Len() (int, int) {
 	return len(e.a), len(e.b)
 }
 
-func (e *EqualSlice) Equal(i, j int) bool {
-	return aequal.IsAEqual(e.a[i], e.b[j])
+func (e *EqualSlice) Equal(i, j int) float64 {
+	return 1 - aequal.WeightedDistance(e.a[i], e.b[j])
 }
 
 func NewEqualSlice(a, b []string) *EqualSlice {

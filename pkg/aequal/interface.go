@@ -1,7 +1,7 @@
 package aequal
 
 type Interface interface {
-	Equal(i, j int) bool
+	Equal(i, j int) float64
 	Len() (int, int)
 }
 
@@ -13,8 +13,11 @@ func (s *Strings) Len() (int, int) {
 	return len(s.a), len(s.b)
 }
 
-func (s *Strings) Equal(i, j int) bool {
-	return s.a[i] == s.b[j]
+func (s *Strings) Equal(i, j int) float64 {
+	if s.a[i] == s.b[j] {
+		return 1
+	}
+	return 0
 }
 
 func NewStrings(a, b string) *Strings {
