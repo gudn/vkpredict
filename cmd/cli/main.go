@@ -9,12 +9,12 @@ import (
 	"strings"
 
 	"github.com/gudn/vkpredict"
+	"github.com/gudn/vkpredict/pkg/match/builder"
+	"github.com/gudn/vkpredict/pkg/match/lcs"
 	"github.com/gudn/vkpredict/pkg/match/preprocessed"
-	"github.com/gudn/vkpredict/pkg/match/prev"
 	"github.com/gudn/vkpredict/pkg/preprocessing/norm"
 	"github.com/gudn/vkpredict/pkg/preprocessing/sequence"
 	"github.com/gudn/vkpredict/pkg/preprocessing/stopwords"
-	"github.com/gudn/vkpredict/pkg/revidx/revstore"
 	"github.com/gudn/vkpredict/pkg/store/memory"
 )
 
@@ -25,11 +25,9 @@ var prep = sequence.New(
 )
 var matcher = preprocessed.New(
 	prep,
-	&prev.PRevMatcher{
-		ReverseIndex: &revstore.RevStore{
-			Store: memory.New(),
-		},
-		MinN: 3,
+	&builder.BuilderMatcher{
+		Builder: lcs.BuildScorer,
+		IterAnyStore: memory.New(),
 	},
 )
 var predictor = vkpredict.Predictor{
