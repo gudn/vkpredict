@@ -25,6 +25,7 @@ func LCS(value aequal.Interface) int {
 
 func WeighedLCS(a, b []string) float64 {
 	es := NewEqualSlice(a, b)
-	val := LCS(es)
-	return float64(val) / float64(len(a))
+	val := float64(LCS(es))
+	frac := val / float64(len(a))
+	return frac * (1 + val / float64(len(b)))
 }
