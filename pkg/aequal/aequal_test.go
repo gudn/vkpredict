@@ -25,6 +25,8 @@ func TestAEqual(t *testing.T) {
 	assertNot(t, "baba", "aabbba")
 	assertNot(t, "babba", "aabbba")
 	assert(t, "babba", "abbba")
+	assertNot(t, "a", "b")
+	assertNot(t, "ab", "ba")
 }
 
 func BenchmarkAEqual(b *testing.B) {
