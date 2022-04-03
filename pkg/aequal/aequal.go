@@ -23,40 +23,43 @@ func min3(a, b, c int) int {
 // https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance
 func EditDistance(value Interface) int {
 	n, m := value.Len()
-	dp := make([][]int, n+1)
-	for i := 0; i <= n; i++ {
-		dp[i] = make([]int, m+1)
-		for j := 0; j <= m; j++ {
-			dp[i][j] = j
-		}
-		dp[i][0] = i
+	prev2 := make([]int, m+1)
+	prev1 := make([]int, m+1)
+	for i := range prev1 {
+		prev1[i] = i
 	}
-	tailingInserts := 0
 	for i := 1; i <= n; i++ {
+		curr := make([]int, m+1)
+		curr[0] = i
 		for j := 1; j <= m; j++ {
-			chost := 0
+			ccost := 0
 			if !value.Equal(i-1, j-1) {
-				chost = ChangeCost
+				ccost = ChangeCost
 			}
-			dp[i][j] = min3(
-				dp[i-1][j]+DeleteCost,
-				dp[i][j-1]+InsertCost,
-				dp[i-1][j-1]+chost,
+			curr[j] = min3(
+				prev1[j]+DeleteCost,
+				prev1[j-1]+ccost,
+				curr[j-1]+InsertCost,
 			)
 			if i > 1 && j > 1 && value.Equal(i-1, j-2) && value.Equal(i-2, j-1) {
-				tc := dp[i-2][j-2] + TransposeCost
-				if tc < dp[i][j] {
-					dp[i][j] = tc
+				tc := prev2[j-2] + TransposeCost
+				if tc < curr[j] {
+					curr[j] = tc
 				}
 			}
-			if i == n && dp[i][j] == dp[i][j-1]+InsertCost {
-				tailingInserts++
-			} else {
-				tailingInserts = 0
-			}
+		}
+		prev2 = prev1
+		prev1 = curr
+	}
+	tailingInserts := 0
+	for j := 1; j <= m; j++ {
+		if prev1[j] == prev1[j-1]+InsertCost {
+			tailingInserts++
+		} else {
+			tailingInserts = 0
 		}
 	}
-	return dp[n][m] - tailingInserts
+	return prev1[m] - tailingInserts
 }
 
 func IsAEqual(a, b string) bool {
