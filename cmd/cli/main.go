@@ -26,6 +26,7 @@ var prep = sequence.New(
 	norm.Norm,
 	strings.ToLower,
 	stopwords.Stopwords,
+	strings.TrimSpace,
 )
 var matcher = preprocessed.New(
 	prep,
