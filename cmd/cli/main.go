@@ -65,7 +65,7 @@ func loadEntries(fname string) ([]string, error) {
 
 func main() {
 	limit := flag.Uint("limit", 5, "limit of results")
-	entriesFile := flag.String("entries", "", "path to newline-separated entries")
+	entriesFile := flag.String("load", "", "path to newline-separated entries")
 	flag.Parse()
 	entries, err := loadEntries(*entriesFile)
 	if err != nil {
