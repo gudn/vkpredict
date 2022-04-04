@@ -19,7 +19,11 @@ import (
 	"github.com/gudn/vkpredict/pkg/preprocessing/sequence"
 	"github.com/gudn/vkpredict/pkg/preprocessing/stopwords"
 	"github.com/gudn/vkpredict/pkg/revidx/revstore"
+	"github.com/gudn/vkpredict/pkg/store"
+	"github.com/gudn/vkpredict/pkg/store/level"
 	"github.com/gudn/vkpredict/pkg/store/memory"
+	"github.com/gudn/vkpredict/pkg/store/unique"
+	"github.com/syndtr/goleveldb/leveldb"
 )
 
 var prep = sequence.New(
@@ -28,30 +32,51 @@ var prep = sequence.New(
 	stopwords.Stopwords,
 	strings.TrimSpace,
 )
-var matcher = preprocessed.New(
-	prep,
-	&compose.ComposeMatcher{
-		Matchers: []match.Matcher{
-			&prev.PRevMatcher{
-				ReverseIndex: &revstore.RevStore{
-					Store: memory.New(),
+
+func makePredictor(dbname string) *vkpredict.Predictor {
+	var db *leveldb.DB
+	if dbname != "" {
+		var err error
+		db, err = leveldb.OpenFile(dbname, nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	makeStore := func (prefix string) store.IterAnyStore {
+		if db == nil {
+			return memory.New()
+		}
+		return unique.New(level.New(prefix, db))
+	}
+	var matcher = preprocessed.New(
+		prep,
+		&compose.ComposeMatcher{
+			Matchers: []match.Matcher{
+				&prev.PRevMatcher{
+					ReverseIndex: &revstore.RevStore{
+						Store: makeStore("revstore"),
+					},
+					MinN: 3,
 				},
-				MinN: 3,
+				&builder.BuilderMatcher{
+					Builder: lcs.BuildScorer,
+					IterAnyStore: makeStore("lcs"),
+				},
 			},
-			&builder.BuilderMatcher{
-				Builder: lcs.BuildScorer,
-				IterAnyStore: memory.New(),
-			},
+			Coefs: []uint{3, 1},
 		},
-		Coefs: []uint{3, 1},
-	},
-)
-var predictor = vkpredict.Predictor{
-	Store:   memory.New(),
-	Matcher: matcher,
+	)
+	return &vkpredict.Predictor{
+		Store: makeStore("predictor"),
+		Matcher: matcher,
+	}
 }
 
+
 func loadEntries(fname string) ([]string, error) {
+	if fname == "" {
+		return nil, nil
+	}
 	f, err := os.Open(fname)
 	if err != nil {
 		return nil, err
@@ -67,11 +92,13 @@ func loadEntries(fname string) ([]string, error) {
 func main() {
 	limit := flag.Uint("limit", 5, "limit of results")
 	entriesFile := flag.String("load", "", "path to newline-separated entries")
+	dbname := flag.String("db", "", "path to leveldb file")
 	flag.Parse()
 	entries, err := loadEntries(*entriesFile)
 	if err != nil {
 		log.Fatalln(err)
 	}
+	predictor := makePredictor(*dbname)
 	err = predictor.Add(entries)
 	if err != nil {
 		log.Fatalln(err)
