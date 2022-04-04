@@ -21,13 +21,13 @@ func LCS(value aequal.Interface) float64 {
 	n, m := value.Len()
 	prev := make([]float64, m+1)
 	for i := 1; i <= m; i++ {
-		prev[i] = prev[i-1] - 0.01
+		prev[i] = prev[i-1] - 0.0075
 	}
 	for i := 1; i <= n; i++ {
 		curr := make([]float64, m+1)
 		for j := 1; j <= m; j++ {
 			// all pairs (i,j) is compared only once
-			tax := 0.1
+			tax := 0.05
 			if math.Abs(curr[j-1]-float64(n)) < 1 {
 				tax = 0
 			}
