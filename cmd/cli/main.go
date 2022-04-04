@@ -73,7 +73,7 @@ func makePredictor(dbname string) *vkpredict.Predictor {
 }
 
 
-func loadEntries(fname string) ([]string, error) {
+func loadStrings(fname string) ([]string, error) {
 	if fname == "" {
 		return nil, nil
 	}
@@ -91,10 +91,11 @@ func loadEntries(fname string) ([]string, error) {
 
 func main() {
 	limit := flag.Uint("limit", 5, "limit of results")
-	entriesFile := flag.String("load", "", "path to newline-separated entries")
+	loadFile := flag.String("load", "", "path to newline-separated entries")
+	qFile := flag.String("queries", "", "path to newline-separated entries")
 	dbname := flag.String("db", "", "path to leveldb file")
 	flag.Parse()
-	entries, err := loadEntries(*entriesFile)
+	entries, err := loadStrings(*loadFile)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -102,6 +103,21 @@ func main() {
 	err = predictor.Add(entries)
 	if err != nil {
 		log.Fatalln(err)
+	}
+	qs, err := loadStrings(*qFile)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	for _, query := range qs {
+		fmt.Printf("Query %q:\n", query)
+		results, err := predictor.Predict(query, *limit)
+		if err != nil {
+			log.Println(err)
+		} else {
+			for i, r := range results {
+				fmt.Printf("%v: %v\n", i+1, r)
+			}
+		}
 	}
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Print("> ")
