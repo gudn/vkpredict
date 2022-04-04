@@ -1,3 +1,4 @@
+// Реализация LCS
 package lcs
 
 import (
@@ -17,6 +18,10 @@ func max3(a, b, c float64) float64 {
 	return res
 }
 
+// Наибольшая общая подпоследовательность
+//
+// Имеет штрафы за пропуск элементов и за использование более далеких элементов.
+// Коеффиценты подбирались на глаз
 func LCS(value aequal.Interface) float64 {
 	n, m := value.Len()
 	prev := make([]float64, m+1)
@@ -42,9 +47,13 @@ func LCS(value aequal.Interface) float64 {
 	return prev[m]
 }
 
-func WeighedLCS(a, b []string) float64 {
-	es := NewEqualSlice(a, b)
+// Взвешенное значение LCS
+//
+// Учитываем как длину запроса, так и длину документа. При одинаковом совпадении
+// с запросом предпочтение отдается более коротким документам
+func WeighedLCS(q, value []string) float64 {
+	es := NewEqualSlice(q, value)
 	val := LCS(es)
-	frac := val / float64(len(a))
-	return frac * (1 + val/float64(len(b)))
+	frac := val / float64(len(q))
+	return frac * (1 + val/float64(len(value)))
 }

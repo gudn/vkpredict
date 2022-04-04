@@ -1,3 +1,4 @@
+// Реализация TopK на основе кучи
 package topk
 
 import (
@@ -15,6 +16,7 @@ type Entry struct {
 type TopK struct {
 	sync.RWMutex
 	heap []*Entry
+	// Размер топа
 	K    uint
 }
 
@@ -47,7 +49,7 @@ func (t *TopK) siftdown(i int) {
 	}
 }
 
-// Return false when new entry is not in TopK with O(logK)
+// Учесть документ в топе. Возвращает истину, если документ попал в топ
 func (t *TopK) Add(entry *Entry) bool {
 	t.Lock()
 	defer t.Unlock()
@@ -64,7 +66,7 @@ func (t *TopK) Add(entry *Entry) bool {
 	return true
 }
 
-// Return sorted TopK with O(K + KlogK)
+// Взять текущий топ и вернуть его отсортированным
 func (t *TopK) Extract() List {
 	t.RLock()
 	c := make([]*Entry, len(t.heap))

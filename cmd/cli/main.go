@@ -26,6 +26,7 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 )
 
+// Дефолтный набор препроцессинга
 var prep = sequence.New(
 	norm.Norm,
 	strings.ToLower,
@@ -33,6 +34,8 @@ var prep = sequence.New(
 	strings.TrimSpace,
 )
 
+// Собираем предиктор с указанным файлом базы данных. Если база данных пустая,
+// будет использована `store/memory`
 func makePredictor(dbname string) *vkpredict.Predictor {
 	var db *leveldb.DB
 	if dbname != "" {
@@ -92,7 +95,7 @@ func loadStrings(fname string) ([]string, error) {
 func main() {
 	limit := flag.Uint("limit", 5, "limit of results")
 	loadFile := flag.String("load", "", "path to newline-separated entries")
-	qFile := flag.String("queries", "", "path to newline-separated entries")
+	qFile := flag.String("queries", "", "path to newline-separated queries")
 	dbname := flag.String("db", "", "path to leveldb file")
 	flag.Parse()
 	entries, err := loadStrings(*loadFile)

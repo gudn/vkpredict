@@ -1,4 +1,4 @@
-// Approximate equality of two strings
+// Реализация редакторского расстояния
 package aequal
 
 const (

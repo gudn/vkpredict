@@ -1,3 +1,4 @@
+// Матчер на сонове LCS
 package lcs
 
 import (

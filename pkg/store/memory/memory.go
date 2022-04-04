@@ -1,3 +1,4 @@
+// Хранилище в памяти на основе мап
 package memory
 
 import (

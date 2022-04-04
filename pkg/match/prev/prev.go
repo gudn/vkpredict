@@ -1,3 +1,4 @@
+// Матчер на основе префиксов слов
 package prev
 
 import (
@@ -12,6 +13,7 @@ import (
 
 type PRevMatcher struct {
 	revidx.ReverseIndex
+	// Минимальная длина слова, после которого он будет разбиваться на префиксы
 	MinN int
 }
 

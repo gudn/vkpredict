@@ -2,6 +2,7 @@ package iters
 
 import "github.com/gudn/vkpredict/pkg/store"
 
+// Реализация Iterable для слайса ID
 type IterSlice struct {
 	slice []store.ID
 	pos   int

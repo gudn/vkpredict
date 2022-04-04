@@ -1,3 +1,7 @@
+// Готовая реализация чистых матчеров
+//
+// Модуль представляет готовый матчер, результаты которого зависят только от
+// документа и запроса
 package builder
 
 import (
@@ -5,12 +9,15 @@ import (
 	"github.com/gudn/vkpredict/pkg/topk"
 )
 
+// Функция, принимающая документ и возвращаются скор (больше лучше)
 type Scorer func(entry string) float64
 
 type Builder func(q string) Scorer
 
 type BuilderMatcher struct {
 	Builder Builder
+	// Хранилище для документов, которыми манипулирует матчер. Нет возможности
+	// как-то на них повлиять изнутри
 	store.IterAnyStore
 }
 

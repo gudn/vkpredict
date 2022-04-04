@@ -1,3 +1,4 @@
+// Обратный индекс на основе хранилища
 package revstore
 
 import (

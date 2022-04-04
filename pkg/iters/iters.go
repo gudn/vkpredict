@@ -1,3 +1,6 @@
+// Итератор по спискам документов
+//
+// В данный момент используется как возвращемый результат обратного индекса.
 package iters
 
 import (
@@ -7,7 +10,10 @@ import (
 )
 
 type Iterable interface {
+	// Текущий элемент итератор
 	Top() store.ID
+	// Продвинуть итератор на один элемент вперед. Возвращает ложь, если итератор
+	// закончился.
 	// After Next() call Top() *must* be greather then old Top()
 	Next() bool
 }
@@ -17,6 +23,7 @@ type Iters struct {
 	heap []Iterable
 }
 
+// Вернуть следующий ID и количество итераторов, содержащих этот документ
 func (it *Iters) Next() (id store.ID, cnt int) {
 	it.Lock()
 	defer it.Unlock()
@@ -46,6 +53,7 @@ func (it *Iters) Next() (id store.ID, cnt int) {
 	return
 }
 
+// Порядок итераторов значения не имеет
 func New(iters ...Iterable) *Iters {
 	it := &Iters{heap: iters}
 	for i := len(it.heap) / 2; i >= 0; i-- {
